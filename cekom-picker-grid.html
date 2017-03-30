@@ -1,0 +1,63 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="cekom-picker-grid">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .picker_grid {
+        width: 280px;
+        height: 200px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        padding: 5px;
+        box-sizing: border-box;
+      }
+      .picker_grid_cell{
+        box-sizing: border-box;
+        width: 55px;
+        height: 55px;
+        margin: 5px;
+        border-radius: 5px;
+        border: 1px solid #666;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+    <div class="picker_grid">
+      <template is="dom-repeat" items="[[items]]" as="item">
+        <div class="picker_grid_cell" on-tap="_fireTap">[[item]]</div>
+      </template>
+      </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'cekom-picker-grid',
+      properties:{
+        items: {
+          type: Array
+        },
+        itemsize: {
+          type: Number,
+          observer: "sizeChanged"
+        }
+      },
+      _fireTap: function(e){
+        this.fire('celltap', {index: e.model.get('index')});
+      },
+      sizeChanged: function(size){
+        this.async(function(){
+          document.querySelectorAll('.picker_grid_cell').forEach(function(cell){
+            cell.style.width = size + 'px';
+            cell.style.height = size + 'px';
+          });
+        }, 1);
+      }
+
+    });
+  </script>
+</dom-module>

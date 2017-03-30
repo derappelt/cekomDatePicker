@@ -1,0 +1,70 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="cekom-year-picker.html">
+
+<dom-module id="cekom-date-picker">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .picker_page_container{
+        transition: transform 0.8s ease-in-out;
+      }
+      .picker_container{
+        width: 280px;
+        height: 270px;
+        border: 1px solid #444;
+        overflow: hidden;
+      }
+      .picker_page{
+        width: 280px;
+        height: 270px;
+        text-align: center;
+      }
+    </style>
+    <input type="text" value="{{dateString}}" disabled>
+    <div class="picker_container">
+      <div class="picker_page_container" id="pageContainer">
+        <div class="picker_page">
+          <cekom-year-picker on-yearselect="handleYearSelect"></cekom-year-picker>
+        </div>
+        <div class="picker_page">
+          <h2>Monat</h2>
+        </div>
+        <div class="picker_page">
+          <h2>Tag</h2>
+        </div>
+      </div>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'cekom-date-picker',
+      properties:{
+        year:{
+          type: Number,
+          value: 0
+        },
+        month:{
+          type: Number,
+          value: 0
+        },
+        day: {
+          type: Number,
+          value: 0
+        },
+        dateString:{
+          type: String,
+          computed: "computeDateString(year, month, day)"
+        }
+      },
+      computeDateString: function(year, month, day){
+        return day + ' - ' + month + ' - ' + year;
+      },
+      handleYearSelect: function(e){
+        this.year = e.detail.year;
+        this.$.pageContainer.style.transform = 'translateY(-270px)';
+      }
+    });
+  </script>
+</dom-module>

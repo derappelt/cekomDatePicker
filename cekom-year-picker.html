@@ -1,0 +1,81 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="cekom-picker-grid.html">
+
+
+<dom-module id="cekom-year-picker">
+  <template>
+    <style>
+      :host {
+        display: block;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+      }
+      .headline{
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .arrow{
+        height: 30px;
+        width: 30px;
+        border: 1px solid #666;
+        border-radius: 5px;
+      }
+      .main_title{
+        margin: 0 10px;
+      }
+    </style>
+      <div class="headline">
+        <div class="arrow arrow_left" on-tap="_decreaseYearRange"></div>
+        <div class="main_title">
+          [[_getCurrentMinYear(maxYear)]] - [[maxYear]]
+        </div>
+        <div class="arrow arrow_right" on-tap="_increaseYearRange"></div>
+      </div>
+      <cekom-picker-grid itemsize="55" items="[[_cutYears(years)]]" on-celltap="fireYearSelect"></cekom-picker-grid>
+  </template>
+  <script>
+    Polymer({
+      is: 'cekom-year-picker',
+      properties:{
+        years : {
+          type: Array,
+          value:[],
+          computed: "_computeYears(maxYear)"
+        },
+        maxYear: {
+          type: Number,
+          value: 2017
+        }
+      },
+      _computeYears: function(maxYear){
+        var tmp = [];
+        for (var i = maxYear-11; i<=maxYear; i++){
+          tmp.push(i);
+        }
+        return tmp;
+      },
+      _cutYears: function(years){
+        return years.map(function(year){return year.toString().slice(-2)});
+      },
+      _getCurrentMinYear: function(maxYear){
+        return maxYear-11;
+      },
+      _decreaseYearRange: function(){
+        if((new Date().getFullYear()-110) < this.maxYear){
+          this.maxYear = this.maxYear-11;
+        }
+      },
+      _increaseYearRange: function(){
+        if(new Date().getFullYear() > this.maxYear){
+          this.maxYear = this.maxYear + 11;
+        }
+      },
+      fireYearSelect: function(e){
+        this.fire('yearselect', {year : this.years[e.detail.index]});
+      }
+    });
+  </script>
+</dom-module>
