@@ -1,0 +1,51 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="cekom-picker-grid.html">
+
+
+<dom-module id="cekom-day-picker">
+  <template>
+    <style>
+      :host {
+        display: block;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+      }
+      .headline{
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .arrow{
+        height: 30px;
+        width: 30px;
+        border: 1px solid #666;
+        border-radius: 5px;
+      }
+      .main_title{
+        margin: 0 10px;
+      }
+    </style>
+      <div class="headline">
+        <div class="main_title">
+          Monat
+        </div>
+      </div>
+      <cekom-picker-grid itemsize="28" items="[[days]]" on-celltap="fireDaySelect"></cekom-picker-grid>
+  </template>
+  <script>
+    Polymer({
+      is: 'cekom-day-picker',
+      properties:{
+        days : {
+          type: Array,
+          value:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31]
+        }
+      },
+      fireDaySelect: function(e){
+        this.fire('dayselect', {day : this.days[e.detail.index]});
+      }
+    });
+  </script>
+</dom-module>

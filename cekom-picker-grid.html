@@ -4,14 +4,16 @@
   <template>
     <style>
       :host {
-        display: block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .picker_grid {
-        width: 280px;
+        /*width: 280px;*/
         height: 200px;
         display: flex;
         align-items: flex-start;
-        justify-content: space-around;
+        justify-content: flex-start;
         flex-wrap: wrap;
         padding: 5px;
         box-sizing: border-box;
@@ -30,7 +32,7 @@
     </style>
     <div class="picker_grid">
       <template is="dom-repeat" items="[[items]]" as="item">
-        <div class="picker_grid_cell" on-tap="_fireTap">[[item]]</div>
+        <div class="picker_grid_cell" style$="width: [[itemsize]]px; height: [[itemsize]]px;" on-tap="_fireTap">[[item]]</div>
       </template>
       </div>
   </template>
@@ -43,21 +45,13 @@
         },
         itemsize: {
           type: Number,
+          value: 55,
           observer: "sizeChanged"
         }
       },
       _fireTap: function(e){
         this.fire('celltap', {index: e.model.get('index')});
-      },
-      sizeChanged: function(size){
-        this.async(function(){
-          document.querySelectorAll('.picker_grid_cell').forEach(function(cell){
-            cell.style.width = size + 'px';
-            cell.style.height = size + 'px';
-          });
-        }, 1);
       }
-
     });
   </script>
 </dom-module>

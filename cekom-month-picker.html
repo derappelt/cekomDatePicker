@@ -1,0 +1,51 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="cekom-picker-grid.html">
+
+
+<dom-module id="cekom-month-picker">
+  <template>
+    <style>
+      :host {
+        display: block;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+      }
+      .headline{
+        height: 70px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .arrow{
+        height: 30px;
+        width: 30px;
+        border: 1px solid #666;
+        border-radius: 5px;
+      }
+      .main_title{
+        margin: 0 10px;
+      }
+    </style>
+      <div class="headline">
+        <div class="main_title">
+          Monat
+        </div>
+      </div>
+      <cekom-picker-grid items="[[months]]" on-celltap="fireMonthSelect"></cekom-picker-grid>
+  </template>
+  <script>
+    Polymer({
+      is: 'cekom-month-picker',
+      properties:{
+        months : {
+          type: Array,
+          value:[1,2,3,4,5,6,7,8,9,10,11,12]
+        }
+      },
+      fireMonthSelect: function(e){
+        this.fire('monthselect', {month : this.months[e.detail.index]});
+      }
+    });
+  </script>
+</dom-module>

@@ -1,11 +1,13 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <link rel="import" href="cekom-year-picker.html">
+<link rel="import" href="cekom-month-picker.html">
+<link rel="import" href="cekom-day-picker.html">
 
 <dom-module id="cekom-date-picker">
   <template>
     <style>
       :host {
-        display: block;
+        display: inline-block;
       }
       .picker_page_container{
         transition: transform 0.8s ease-in-out;
@@ -22,17 +24,17 @@
         text-align: center;
       }
     </style>
-    <input type="text" value="{{dateString}}" disabled>
-    <div class="picker_container">
+    <input type="text" value="{{dateString}}" on-tap="handleDateInputTap">
+    <div id="pickerContainer" class="picker_container" hidden$="[[hidePicker]]">
       <div class="picker_page_container" id="pageContainer">
         <div class="picker_page">
           <cekom-year-picker on-yearselect="handleYearSelect"></cekom-year-picker>
         </div>
         <div class="picker_page">
-          <h2>Monat</h2>
+          <cekom-month-picker on-monthselect="handleMonthSelect"></cekom-month-picker>
         </div>
         <div class="picker_page">
-          <h2>Tag</h2>
+          <cekom-day-picker on-dayselect="handleDaySelect"></cekom-day-picker>
         </div>
       </div>
     </div>
@@ -56,7 +58,14 @@
         dateString:{
           type: String,
           computed: "computeDateString(year, month, day)"
+        },
+        hidePicker: {
+          type: Boolean,
+          value: true
         }
+      },
+      handleDateInputTap:function(e){
+        this.hidePicker = false;
       },
       computeDateString: function(year, month, day){
         return day + ' - ' + month + ' - ' + year;
@@ -64,6 +73,23 @@
       handleYearSelect: function(e){
         this.year = e.detail.year;
         this.$.pageContainer.style.transform = 'translateY(-270px)';
+      },
+      handleMonthSelect: function(e){
+        this.month = e.detail.month;
+        this.$.pageContainer.style.transform = 'translateY(-540px)';
+      },
+      handleDaySelect: function(e){
+        this.day = e.detail.day;
+        this.$.pageContainer.style.transform = 'translateY(0px)';
+        this.hidePicker = true;
+      },
+      attached: function(){
+        document.addEventListener("click", ()=>{
+          this.hidePicker = true;
+        });
+        this.addEventListener("click", (e)=>{
+          e.stopPropagation();
+        });
       }
     });
   </script>
